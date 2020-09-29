@@ -15,9 +15,12 @@ cartas_baralho = 4 * ['As','2','3','4','5','6','7','8','9','10','K','Q','J'] #52
 #mãos do jogador e banco
 banco = []
 
-j = int(input('Numero'))
+#quantos jogadores vão jogar
+j = int(input('Número de pessoas'))
 
+#mão de jogadores + banco
 maos_dos_jogadores = [ [] for _ in range(j + 1) ]
+
 
 i = 0
 
@@ -28,4 +31,4 @@ while i < 2:
         del cartas_baralho[x]
     i += 1
 
-print(maos_dos_jogadores,cartas_baralho)
+
