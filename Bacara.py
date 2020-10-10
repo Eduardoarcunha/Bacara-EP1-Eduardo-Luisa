@@ -14,9 +14,6 @@ cartas_valores = {'As':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':0,
 #Cartas de um único baralho
 cartas_baralho1 = 4 * ['As','2','3','4','5','6','7','8','9','10','K','Q','J'] #52 cartas
 
-#Mão do jogador + banco
-maos = [ [] for _ in range(0,2) ]
-
 
 #Quantos baralhos
 nb = int(input('Quantos baralhos serão utilizados? (1,6,8): '))
@@ -39,9 +36,6 @@ while True:
     else:
         break
 
-#lista dos vencedores
-vencedores = []
-
 
 opcoes = ['jogador','banco','empate']
 
@@ -50,6 +44,8 @@ fichas = [100] * nj
 
 #verificando apostas
 while jogo:
+    vencedores = []
+    maos = [ [] for _ in range(0,2) ]
     soma = [0] * 2
     apostas = []
     valor_aposta = []
@@ -62,7 +58,7 @@ while jogo:
                     apostas.append(b)
                     break
                 else:
-                    print('Aposta invalida...')
+                    print('Aposta inválida...')
                     print('Jogador {}, qual sua aposta? (empate, banco, ou jogador)'.format(a + 1))
                     b = input()
 
@@ -73,14 +69,16 @@ while jogo:
                     valor_aposta.append(b)
                     break
                 else:
-                    print('Aposta invalida...')
+                    print('Aposta inválida...')
                     print('Jogador {}, de quanto é sua aposta? '.format(a + 1))
                     b = int(input())
         if fichas[a] <= 0:
-            apostas.append('eliminado')
-            valor_aposta.append('eliminado')
+            apostas.append('Eliminado')
+            valor_aposta.append('Eliminado')
 
-    print('chegou')
+    for p in range(0, nj):
+        if fichas[p] > 0:
+            print('Jogador {0} sua aposta foi de {1} fichas no {2}.'.format((p+1), valor_aposta[p], apostas[p]))
 
     i = 0
 
@@ -135,10 +133,11 @@ while jogo:
                     vencedores.append('jogador')
                 elif i == 1:
                     vencedores.append('banco')
+        break
 
-
-    print('chegou')
-
+    print('Mão dos jogadores: {0} \nSoma:{1}'.format(maos[0], soma[0]))
+    print('Mão do banco: {0} \nSoma:{1}'.format(maos[1], soma[1]))
+    
     #Conferindo resultados
     if len(vencedores) == 0 or len(vencedores) == 2:
         resultado = 'empate'
@@ -148,20 +147,30 @@ while jogo:
         else:
             resultado = 'banco'
 
-    for i in range(0,nj - 1):
+    if resultado == 'empate':
+        print('O resultado foi {0}.'.format(resultado))
+    else:
+        print('O {0} venceu!'.format(resultado))
+
+    for i in range(0, nj):
         if fichas[i] > 0:
             fichas[i] = fichas_recebidas(fichas[i],valor_aposta[i],apostas[i],resultado,nb)
 
+    for i, a in enumerate(fichas):
+        print('O saldo de fichas do jogador {0} ficou: {1}'.format(i+1, a))
+
     while True:
-        d = input('Quer continuar jogando(sim/não)')
-        if d == 'não':
+        d = input('Quer continuar jogando? (sim/nao):')
+        if d == 'nao':
             jogo = False
+            print('Jogo finalizado.')
             break
         elif d == 'sim':
             break
         else:
-            print('Resposta invalida')
-        
+            print('Resposta inválida...')
 
+for i, a in enumerate(fichas):
+        print('O saldo de fichas final do jogador {0} é: {1}'.format(i+1, a))
 
-    print(apostas,valor_aposta,maos,soma,vencedores,resultado)
+print('Obrigado por jogar o Bacará!')
